@@ -8,6 +8,7 @@ class Persona(var DNI: String) {
     private var altura:Double = 0.0
     private var res: Int = 0
     private var imc: Double = 0.0
+    private var pesoideal: String = ""
 
     fun name(n: String) {
         nombre = n
@@ -36,10 +37,21 @@ class Persona(var DNI: String) {
 
         imc = peso / (altura.pow(2.0))
 
-        when (imc) {
-            in 0.0..19.9 -> res = -1
-            in 20.0..25.0 -> res = 0
-            in 25.1..1000.0 -> res = 1
+        when {
+            imc < 20.0 -> res = -1
+            imc in 20.0..25.0 -> res = 0
+            imc > 25.0 -> res = 1
+        }
+        when (res) {
+            0 -> {
+                pesoideal = "está vd. en su peso ideal"
+            }
+            1 -> {
+                pesoideal = "tiene vd. sobrepeso"
+            }
+            -1 -> {
+                pesoideal = "está vd. por debajo de su peso ideal"
+            }
         }
     }
 
@@ -54,18 +66,6 @@ class Persona(var DNI: String) {
         } else {
             "mujer"
         }
-        var pesoideal = "está vd. en su peso ideal"
-        when (res) {
-            0 -> {
-                pesoideal = "está vd. por debajo de su peso ideal"
-            }
-            1 -> {
-                pesoideal = "tiene vd. sobrepeso"
-            }
-            -1 -> {
-                pesoideal = "está vd. en su peso ideal"
-            }
-        }
 
         return ("Vd. es $nombre, de género $sex, tiene $edad años, pesa $peso kg, mide $altura metros, su DNI es $DNI y $pesoideal y $imc")
     }
@@ -77,7 +77,7 @@ fun main() {
     p.age(26)
     p.checkSex("H")
     p.genDNI()
-    p.calcIMC(74.0,1.72)
+    p.calcIMC(73.0,1.72)
     p.esMayordeEdad(26)
     println(p.toString())
 }
